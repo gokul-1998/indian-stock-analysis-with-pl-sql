@@ -47,7 +47,7 @@ begin
        commit;
     end;
 ```
-- after the table has been created , follow the steps in below document to import data.
+- after the table has been created , follow the steps in the  below document to import data.
 
     * [How to import data from csv to oracle](import_csv_into_oracle.md)
 - Next step is to calculate moving average for the data we got.So we will create a new table as <Stock1> like bajaj1,infosys1,etc... with MA for 20 and 50 days
@@ -160,4 +160,110 @@ begin
 ```
 
 - we have populated the table <stock>2 with signal as buy/sell/hold
--
+
+- we have a procedure to give the signal on a particular day for a particular stock
+```
+create or replace procedure trade_signal_with_date(stock_name in varchar2,
+trade_date in Date)
+is 
+trade_signal varchar2(100);
+sss varchar2(2000);
+begin
+sss:='select signal from '||stock_name||'2 where stk_date='''||trade_date||'''';
+        execute immediate sss into trade_signal;
+    DBMS_OUTPUT.put_line(''||stock_name ||' : '||trade_signal);
+end trade_signal_with_date;
+```
+- calling the procedure 
+```
+set serveroutput ON
+begin
+trade_signal_with_date('bajaj','01-01-15');
+end;
+```
+
+- lets try to modify this to make it print the status of all the 6 stocks on a given date
+
+```
+create or replace procedure all_trade_signal_with_date(trade_date in Date)
+is
+my_array sys.dbms_debug_vc2coll:= sys.dbms_debug_vc2coll('hero', 'bajaj', 'eicher', 'infosys','tvs','tcs');
+begin
+    DBMS_OUTPUT.put_line('Trade signal for all stocks for the date :'||trade_date ||'''');
+     DBMS_OUTPUT.put_line('----------------------------------------------------------------------');
+  for r in my_array.first..my_array.last
+        loop
+            trade_signal_with_date(my_array(r),trade_date);
+       end loop;
+       commit;
+    end all_trade_signal_with_date;
+```
+- calling the above function
+```
+    set serveroutput ON
+    begin
+    all_trade_signal_with_date('01-01-15');
+    end;
+```
+
+- we are going to gererate report in a separate table as `stock_report` .
+- so lets first create the table
+```
+create table  stock_report (
+stock_name varchar2(1000),
+max_close number(10,2),
+min_close number(10,2),
+avg_close number(10,2),
+stddev_close number(10,2),
+golden_cross_buy number,
+death_cross_sell number,
+total_transactions number)
+```
+- let us create a procedure to populate the stock_report table
+```
+create or replace procedure  populate_stock_report (table_name IN varchar2)
+is
+    max_close number;
+min_close number;
+avg_close number(10,2);
+stddev_close number(10,2);
+golden_cross_buy number;
+death_cross_sell number;
+total_transactions number;
+  table_count number;
+  sql_stmt varchar2(1000);
+  sss varchar2(1000);
+begin
+        execute immediate 'select max(close) from '||table_name into max_close;
+        execute immediate 'select min(close) from '||table_name into min_close;
+        execute immediate 'select avg(close) from '||table_name into avg_close;
+        execute immediate 'select stddev(close) from '||table_name into stddev_close;
+        sss:='select count(signal) from '||table_name||'2 where signal=''Sell''';
+        execute immediate sss into death_cross_sell;
+        sss:='select count(signal) from '||table_name||'2 where signal=''Buy''';
+        execute immediate sss into golden_cross_buy;
+        sql_stmt := 'INSERT INTO stock_report VALUES (:1, :2, :3,:4,:5, :6, :7,:8)';
+        EXECUTE IMMEDIATE sql_stmt USING table_name, max_close, min_close,avg_close,stddev_close,golden_cross_buy,death_cross_sell,golden_cross_buy+death_cross_sell;
+end populate_stock_report;
+```
+- executing the above procedure
+```
+set serveroutput on;
+begin
+    populate_stock_report('hero');
+    DBMS_OUTPUT.PUT_LINE('inserted successfully');
+END;
+```
+
+- lets populate for all the six stocks
+```
+declare
+my_array sys.dbms_debug_vc2coll:= sys.dbms_debug_vc2coll('hero', 'bajaj', 'eicher', 'infosys','tvs','tcs');
+begin
+  for r in my_array.first..my_array.last
+        loop
+            populate_stock_report(my_array(r));
+       end loop;
+       commit;
+    end;
+```
