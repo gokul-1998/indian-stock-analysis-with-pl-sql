@@ -47,17 +47,9 @@ begin
        commit;
     end;
 ```
-- once the table is created , we have to import data, by following steps
-- ![image](https://user-images.githubusercontent.com/82328858/204153388-fba6bc64-7812-490b-b93c-23d51a6277ab.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153406-54e27d3d-b0b4-47a4-91d5-7f5cbb3df69b.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153440-85753c21-9a59-4a7e-b5a2-1c03cfc515da.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153459-0b1a47fd-49c1-48cc-961c-1e5d7fa96f97.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153470-cf6825b3-b62c-4bea-b718-fc0817f21a77.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153490-17d34ccd-fc3e-45cc-a8b9-e3c7184d343f.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153506-91a9bf58-ac72-4b5d-b928-628685144322.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153520-9c0d57e7-456c-4849-80ff-734a84c02438.png)
-- ![image](https://user-images.githubusercontent.com/82328858/204153530-189df053-6a53-4677-a57e-41a825c81406.png)
+- after the table has been created , follow the steps in below document to import data.
 
+    * [How to import data from csv to oracle](import_csv_into_oracle.md)
 - Next step is to calculate moving average for the data we got.So we will create a new table as <Stock1> like bajaj1,infosys1,etc... with MA for 20 and 50 days
 
 ```
