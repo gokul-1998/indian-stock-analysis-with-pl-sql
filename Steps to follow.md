@@ -77,6 +77,7 @@ ROUND(AVG(Close) OVER(ORDER BY stk_date ROWS 49 PRECEDING),2)  "50 Day MA"
 FROM '||table_name||'');
 end;
 ```
+	
 - how to execute the procedure we created above ?
 
 ```
@@ -84,6 +85,8 @@ begin
     create_stock_table_with_ma('bajaj');
 end;
 ```
+![image](https://user-images.githubusercontent.com/82328858/204157825-e2451b41-2335-4177-970c-f452ad224c2e.png)
+
 - use loop to call the procedure for all the tables
 ```
 declare
@@ -115,6 +118,8 @@ USING(stk_date)
 INNER JOIN tvs
 USING(stk_date);
 ```
+	![image](https://user-images.githubusercontent.com/82328858/204157882-ffea8307-a378-4bfa-914b-816699f89874.png)
+
 - now lets create a table with signal whether to `buy/hold/sell` based on the MA values
 
 ```
@@ -144,6 +149,7 @@ begin
     create_stock_table_with_signal('bajaj');
 end;
 ```
+![image](https://user-images.githubusercontent.com/82328858/204157925-d18d4aed-b9f4-4456-824a-c760b8e5c95a.png)
 
 - lets iterate and do the same for all the stocks
 
@@ -205,6 +211,8 @@ begin
     all_trade_signal_with_date('01-01-15');
     end;
 ```
+	![image](https://user-images.githubusercontent.com/82328858/204157985-b712ffb0-80bb-4e8a-adfb-fccd6abf3347.png)
+
 
 - we are going to gererate report in a separate table as `stock_report` .
 - so lets first create the table
@@ -267,3 +275,4 @@ begin
        commit;
     end;
 ```
+	![image](https://user-images.githubusercontent.com/82328858/204158018-0e3856f7-7b08-49e4-9340-dbf60acb1ad2.png)
