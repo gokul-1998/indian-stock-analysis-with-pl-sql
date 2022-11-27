@@ -118,7 +118,7 @@ USING(stk_date)
 INNER JOIN tvs
 USING(stk_date);
 ```
-	![image](https://user-images.githubusercontent.com/82328858/204157882-ffea8307-a378-4bfa-914b-816699f89874.png)
+![image](https://user-images.githubusercontent.com/82328858/204157882-ffea8307-a378-4bfa-914b-816699f89874.png)
 
 - now lets create a table with signal whether to `buy/hold/sell` based on the MA values
 
@@ -211,7 +211,7 @@ begin
     all_trade_signal_with_date('01-01-15');
     end;
 ```
-	![image](https://user-images.githubusercontent.com/82328858/204157985-b712ffb0-80bb-4e8a-adfb-fccd6abf3347.png)
+![image](https://user-images.githubusercontent.com/82328858/204157985-b712ffb0-80bb-4e8a-adfb-fccd6abf3347.png)
 
 
 - we are going to gererate report in a separate table as `stock_report` .
@@ -275,4 +275,4 @@ begin
        commit;
     end;
 ```
-	![image](https://user-images.githubusercontent.com/82328858/204158018-0e3856f7-7b08-49e4-9340-dbf60acb1ad2.png)
+![image](https://user-images.githubusercontent.com/82328858/204158018-0e3856f7-7b08-49e4-9340-dbf60acb1ad2.png)
