@@ -1,1 +1,8 @@
-hellow all
+- This repository contains analysis of 6 differnt indian stocks namely 
+    - Hero
+    - TCS
+    - Infosys
+    - TVS
+    - Eicher
+    - Bajaj
+- One of the most basic technical analysis used by a lot of stock traders is the Moving Average Method. Consider the following price trend of a particular stock.
